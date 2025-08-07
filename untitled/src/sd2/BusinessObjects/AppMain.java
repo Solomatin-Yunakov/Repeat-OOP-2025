@@ -1,4 +1,4 @@
-package sd2.BusinessObjects;
+
 
 /** OOP Feb 2022
  * This AppMain demonstrates the use of a Data Access Object (DAO)
@@ -17,17 +17,19 @@ package sd2.BusinessObjects;
  * to create the required MySQL user_database and User table.
  */
 
-import com.dkit.oop.sd2.DAOs.MySqlUserDao;
-import com.dkit.oop.sd2.DAOs.UserDaoInterface;
-import com.dkit.oop.sd2.DTOs.User;
-import com.dkit.oop.sd2.Exceptions.DaoException;
+import java.sql.Connection;
 import java.util.List;
+import DAOs.MySqlDao;
+import java.sql.Date;
+import DTOs.CurrentPlayers;
+import DTOs.PerspectivePlayers;
 
 public class AppMain
 {
     public static void main(String[] args)
     {
-        UserDaoInterface IUserDao = new MySqlUserDao();  //"IUserDao" -> "I" stands for for
+        CurrentPlayersDaoInterface ICurrentPlayersDao = new MySqlCurrentPlayersDao();
+        PerspectivePlayersDaoInterface IPerspectivePlayersDao = new MySqlPerspectivePlayersDao();  //"IUserDao" -> "I" stands for for
 
 //        // Notice that the userDao reference is an Interface type.
 //        // This allows for the use of different concrete implementations.
@@ -47,7 +49,7 @@ public class AppMain
         try
         {
             System.out.println("\nCall findAllUsers()");
-            List<User> users = IUserDao.findAllUsers();     // call a method in the DAO
+            List<CurrentPlayers> currentplayers = ICurrentPlayersDao.findAllUsers();     // call a method in the DAO
 
             if( users.isEmpty() )
                 System.out.println("There are no Users");

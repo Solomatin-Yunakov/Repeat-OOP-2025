@@ -16,14 +16,14 @@ package sd2.DTOs;
 
 public class PerspectivePlayers
 {
-    private int PersPlayerid;
+    private int perspectiveplayerid;
     private String playerName;
     private double playerHeight;
     private Date DateOfBirth;
 
-    public PerspectivePlayers(int PersPlayerid, String playerName, double playerHeight, Date DateOfBirth)
+    public PerspectivePlayers(int perspectiveplayerid, String playerName, double playerHeight, Date DateOfBirth)
     {
-        this.PersPlayerid = PersPlayerid;
+        this.perspectiveplayerid = perspectiveplayerid;
         this.playerName = playerName;
         this.playerHeight = playerHeight;
         this.DateOfBirth = DateOfBirth;
@@ -32,7 +32,7 @@ public class PerspectivePlayers
 
     public User(String playerName, double playerHeight, Date DateOfBirth)
     {
-        this.PersPlayerid = 0;
+        this.perspectiveplayerid = 0;
         this.playerName = playerName;
         this.playerHeight = playerHeight;
         this.DateOfBirth = DateOfBirth;
@@ -44,11 +44,11 @@ public class PerspectivePlayers
     }
     public int getPlayerid()
     {
-        return PersPlayerid;
+        return perspectiveplayerid;
     }
-    public void setPlayerid(int PersPlayerid)
+    public void setPlayerid(int perspectiveplayerid)
     {
-        this.PersPlayerid = PersPlayerid;
+        this.perspectiveplayerid = persplayerid;
     }
     public String getPlayerName()
     {
@@ -81,7 +81,7 @@ public class PerspectivePlayers
     public String toString()
     {
        return "PerspectivePlayers{" +
-               "PersPlayerid=" + PersPlayerid +
+               "perspectiveplayerid=" + perspectiveplayerid +
                ", playerName='" + playerName + '\'' +
                ", playerHeight=" + playerHeight +
                ", DateOfBirth=" + DateOfBirth +

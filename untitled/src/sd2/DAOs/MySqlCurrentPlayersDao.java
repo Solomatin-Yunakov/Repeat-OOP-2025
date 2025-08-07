@@ -20,7 +20,7 @@
 
 
 import Exceptions.DaoException;
-import DTOs.PerspectivePlayers;
+import DTOs.CurrentPlayers;
 import DTOs.PerspectivePlayers;
 import java.sql.*;
 import java.util.ArrayList;
@@ -54,12 +54,12 @@ public class MySqlUserDao extends MySqlDao implements UserDaoInterface
      * @throws DaoException
      */
     @Override
-    public List<PerspectivePlayers> findAllPlayers() throws DaoException
+    public List<CurrentPlayers> findAllPlayers() throws DaoException
     {
         Connection connection = null;
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
-        List<PerspectivePlayers> perspectiveplayersList = new ArrayList<>();
+        List<CurrentPlayers> currentplayersList = new ArrayList<>();
 
         try
         {
@@ -67,28 +67,28 @@ public class MySqlUserDao extends MySqlDao implements UserDaoInterface
             // from the super class (MySqlDao.java)
             connection = this.getConnection();
 
-            String query = "SELECT * FROM perspective_players";
+            String query = "SELECT * FROM current_players";
             preparedStatement = connection.prepareStatement(query);
 
             //Using a PreparedStatement to execute SQL...
             resultSet = preparedStatement.executeQuery();
             while (resultSet.next())
             {
-                int userId = resultSet.getInt("PerspectivePlayerID");
+                int userId = resultSet.getInt("CurrentPlayerID");
                 String username = resultSet.getString("Name");
                 double amount = resultSet.getDouble("Height");
                 Date dateIncurred = resultSet.getDate("DOB");
-                PerspectivePlayers pp = new PerspectivePlayers(perspectiveplayerid,playerName,playerHeight,dateofbirth);
-                perspectiveplayersList.add(pp);
+                CurrentPlayers cp = new CurrentPlayers(currentplayerid,playerName,playerHeight,dateofbirth);
+                currentplayersList.add(cp);
             }
             double total = 0.0;
-                        for (PerspectivePlayers pp : perspectiveplayersList) {
-                            total = total + pp.getAmount();
+                        for (CurrentPlayers cp : currentplayersList) {
+                            total = total + cp.getAmount();
                         }
-                        System.out.println("Total number of perspective players: " + total);
+                        System.out.println("Total number of current players: " + total);
         } catch (SQLException e)
         {
-            throw new DaoException("findPerspectivePlayers() " + e.getMessage());
+            throw new DaoException("findAllCurrentPlayers() " + e.getMessage());
         } finally
         {
             try
@@ -107,10 +107,10 @@ public class MySqlUserDao extends MySqlDao implements UserDaoInterface
                 }
             } catch (SQLException e)
             {
-                throw new DaoException("findAllPerspectivePlayers() " + e.getMessage());
+                throw new DaoException("findAllCurrentPlayers() " + e.getMessage());
             }
         }
-        return perspectiveplayersList;     // may be empty
+        return currentplayersList;     // may be empty
     }
 
     /**

@@ -19,15 +19,16 @@ package sd2.DAOs;
  * can be replaced by mock DAO objects.
  */
 
-import sd2.DTOs.User;
+import DTOs.PerspectivePlayers;
 import sd2.Exceptions.DaoException;
 import java.util.List;
+import java.sql.Date;
 
-public interface UserDaoInterface
+public interface PerspectivePlayersDaoInterface
 {
-    public List<User> findAllUsers() throws DaoException;
+    public List<PerspectivePlayers> findAllPlayers() throws DaoException;
 
-    public User findUserByUsernamePassword(String username, String password) throws DaoException;
+
 
 }
 
