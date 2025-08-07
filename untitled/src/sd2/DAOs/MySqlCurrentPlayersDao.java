@@ -74,11 +74,11 @@ public class MySqlUserDao extends MySqlDao implements UserDaoInterface
             resultSet = preparedStatement.executeQuery();
             while (resultSet.next())
             {
-                int userId = resultSet.getInt("CurrentPlayerID");
-                String username = resultSet.getString("Name");
-                double amount = resultSet.getDouble("Height");
-                Date dateIncurred = resultSet.getDate("DOB");
-                CurrentPlayers cp = new CurrentPlayers(currentplayerid,playerName,playerHeight,dateofbirth);
+                int playerId = resultSet.getInt("CurrentPlayerID");
+                String playername = resultSet.getString("Name");
+                double height = resultSet.getDouble("Height");
+                Date dateofbirth = resultSet.getDate("DOB");
+                CurrentPlayers cp = new CurrentPlayers(playerId,playername,height,dateofbirth);
                 currentplayersList.add(cp);
             }
             double total = 0.0;
@@ -112,6 +112,44 @@ public class MySqlUserDao extends MySqlDao implements UserDaoInterface
         }
         return currentplayersList;     // may be empty
     }
+    public Earnings getCurrentPlayerByID(int dateofbirth) throws DaoException {
+            Connection connection = null;
+            PreparedStatement preparedStatement = null;
+            ResultSet resultSet = null;
+            CurrentPlayers currentplayersbyid = null;
+            try {
+                connection = this.getConnection();
+                String query = "SELECT * FROM current_players WHERE CURRENTPLAYERID = ? ";
+                preparedStatement = connection.prepareStatement(query);
+                preparedStatement.setDate(1, date);
+                resultSet = preparedStatement.executeQuery();
+                if (resultSet.next()) {
+                   int playerId = resultSet.getInt("CurrentPlayerID");
+                   String playername = resultSet.getString("Name");
+                   double height = resultSet.getDouble("Height");
+                   Date dateofbirth = resultSet.getDate("DOB");
+
+                    currentplayersbyid = new CurrentPlayers(playerId,playername,height,dateofbirth);
+                }
+            } catch (SQLException e) {
+                throw new DaoException("getCurrentPlayerByID() " + e.getMessage());
+            } finally {
+                try {
+                    if (resultSet != null) {
+                        resultSet.close();
+                    }
+                    if (preparedStatement != null) {
+                        preparedStatement.close();
+                    }
+                    if (connection != null) {
+                        freeConnection(connection);
+                    }
+                } catch (SQLException e) {
+                    throw new DaoException("getCurrentPlayerByID() " + e.getMessage());
+                }
+            }
+            return currentplayersbyid;     // reference to User object, or null value
+        }
 
     /**
      * Given a username and password, find the corresponding User
