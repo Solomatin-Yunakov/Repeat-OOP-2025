@@ -150,6 +150,27 @@ public class MySqlUserDao extends MySqlDao implements UserDaoInterface
             }
             return currentplayersbyid;     // reference to User object, or null value
         }
+        public boolean DeleteCurrentPlayerByID(int id) throws DaoException {
+
+                Connection connection = null;
+                PreparedStatement preparedStatement = null;
+
+                try {
+                    connection = this.getConnection();  // Initialize connection
+
+                    String query = "DELETE FROM current_players WHERE CurrentPlayerID = ?";
+                    preparedStatement = connection.prepareStatement(query);
+                    preparedStatement.setInt(1, id);
+
+                    int rowsAffected = preparedStatement.executeUpdate();
+
+                    return rowsAffected > 0; // Returns true if at least one row was deleted
+
+                } catch (SQLException e) {
+                    throw new DaoException("Error deleting CurrentPlayer with ID " + id + ": " + e.getMessage());
+                }
+        }
+        
 
     /**
      * Given a username and password, find the corresponding User
