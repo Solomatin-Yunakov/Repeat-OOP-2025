@@ -170,7 +170,40 @@ public class MySqlUserDao extends MySqlDao implements UserDaoInterface
                     throw new DaoException("Error deleting CurrentPlayer with ID " + id + ": " + e.getMessage());
                 }
         }
-        
+        public boolean AddCurrentPlayer(String Name,  double height, Date DOB) throws DaoException {
+                Connection connection = null;
+                PreparedStatement preparedStatement = null;
+                ResultSet resultSet = null;
+
+                try {
+                    connection = this.getConnection();
+
+                    // Get the highest EXPENSE_ID to generate a new ID
+                    String idQuery = "SELECT MAX(CurrentPlayerID) FROM current_players";
+                    PreparedStatement idStatement = connection.prepareStatement(idQuery);
+                    ResultSet idResult = idStatement.executeQuery();
+                    int getid = 1;
+                    if (idResult.next()) {
+                        getid = idResult.getInt(1) + 1;
+                    }
+
+
+                    // Corrected SQL insert query
+                    String query2 = "INSERT INTO current_players (CurrentPlayerID, Name, height, DOB) VALUES (?, ?, ?, ?)";
+                    preparedStatement = connection.prepareStatement(query2);
+                    preparedStatement.setInt(1, getid);
+                    preparedStatement.setString(2, Name);
+                    preparedStatement.setDouble(3, height);
+                    preparedStatement.setDate(4, DOB);
+
+                    return preparedStatement.executeUpdate() > 0;
+
+                } catch (SQLException e) {
+                    throw new DaoException("Failed to add current_players: " + e.getMessage());
+                }
+
+            }
+
 
     /**
      * Given a username and password, find the corresponding User
