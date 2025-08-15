@@ -112,6 +112,101 @@ public class MySqlUserDao extends MySqlDao implements UserDaoInterface
         }
         return perspectiveplayersList;     // may be empty
     }
+    public Earnings getCurrentPlayerByID(int dateofbirth) throws DaoException {
+                Connection connection = null;
+                PreparedStatement preparedStatement = null;
+                ResultSet resultSet = null;
+                PerspectivePlayers PerspectivePlayersbyid = null;
+                try {
+                    connection = this.getConnection();
+                    String query = "SELECT * FROM perspective_players WHERE PerspectivePLAYERID = ? ";
+                    preparedStatement = connection.prepareStatement(query);
+                    preparedStatement.setDate(1, date);
+                    resultSet = preparedStatement.executeQuery();
+                    if (resultSet.next()) {
+                       int playerId = resultSet.getInt("PerspectivePlayerID");
+                       String playername = resultSet.getString("Name");
+                       double height = resultSet.getDouble("Height");
+                       Date dateofbirth = resultSet.getDate("DOB");
+    
+                        PerspectivePlayersbyid = new PerspectivePlayers(playerId,playername,height,dateofbirth);
+                    }
+                } catch (SQLException e) {
+                    throw new DaoException("getCurrentPlayerByID() " + e.getMessage());
+                } finally {
+                    try {
+                        if (resultSet != null) {
+                            resultSet.close();
+                        }
+                        if (preparedStatement != null) {
+                            preparedStatement.close();
+                        }
+                        if (connection != null) {
+                            freeConnection(connection);
+                        }
+                    } catch (SQLException e) {
+                        throw new DaoException("getCurrentPlayerByID() " + e.getMessage());
+                    }
+                }
+                return PerspectivePlayersbyid;     // reference to User object, or null value
+            }
+            public boolean DeleteCurrentPlayerByID(int id) throws DaoException {
+    
+                    Connection connection = null;
+                    PreparedStatement preparedStatement = null;
+    
+                    try {
+                        connection = this.getConnection();  // Initialize connection
+    
+                        String query = "DELETE FROM perspective_players WHERE PerspectivePlayerID = ?";
+                        preparedStatement = connection.prepareStatement(query);
+                        preparedStatement.setInt(1, id);
+    
+                        int rowsAffected = preparedStatement.executeUpdate();
+    
+                        return rowsAffected > 0; // Returns true if at least one row was deleted
+    
+                    } catch (SQLException e) {
+                        throw new DaoException("Error deleting CurrentPlayer with ID " + id + ": " + e.getMessage());
+                    }
+            }
+            public boolean AddCurrentPlayer(String Name,  double height, Date DOB) throws DaoException {
+                    Connection connection = null;
+                    PreparedStatement preparedStatement = null;
+                    ResultSet resultSet = null;
+    
+                    try {
+                        connection = this.getConnection();
+    
+                        // Get the highest EXPENSE_ID to generate a new ID
+                        String idQuery = "SELECT MAX(PerspectivePlayerID) FROM perspective_players";
+                        PreparedStatement idStatement = connection.prepareStatement(idQuery);
+                        ResultSet idResult = idStatement.executeQuery();
+                        int getid = 1;
+                        if (idResult.next()) {
+                            getid = idResult.getInt(1) + 1;
+                        }
+    
+    
+                        // Corrected SQL insert query
+                        String query2 = "INSERT INTO perspective_players (PerspectivePlayerID, Name, height, DOB) VALUES (?, ?, ?, ?)";
+                        preparedStatement = connection.prepareStatement(query2);
+                        preparedStatement.setInt(1, getid);
+                        preparedStatement.setString(2, Name);
+                        preparedStatement.setDouble(3, height);
+                        preparedStatement.setDate(4, DOB);
+    
+                        return preparedStatement.executeUpdate() > 0;
+    
+                     catch (SQLException e) {
+                        throw new DaoException("Failed to add perspective_players: " + e.getMessage());
+                    }
+                }
+                 public List<PerspectivePlayers> findPlayerUsingFilter(Comparator<PerspectivePlayers> comparator) {
+                        List<PerspectivePlayers> players = findAllPlayers();
+                        players.sort(comparator);
+                        return players;
+                }
     
 
     /**
