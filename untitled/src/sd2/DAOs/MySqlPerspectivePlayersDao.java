@@ -112,6 +112,7 @@ public class MySqlUserDao extends MySqlDao implements UserDaoInterface
         }
         return perspectiveplayersList;     // may be empty
     }
+    
 
     /**
      * Given a username and password, find the corresponding User

@@ -198,10 +198,14 @@ public class MySqlUserDao extends MySqlDao implements UserDaoInterface
 
                     return preparedStatement.executeUpdate() > 0;
 
-                } catch (SQLException e) {
+                 catch (SQLException e) {
                     throw new DaoException("Failed to add current_players: " + e.getMessage());
                 }
-
+            }
+             public List<CurrentPlayers> findPlayerUsingFilter(Comparator<CurrentPlayers> comparator) {
+                    List<CurrentPlayers> players = findAllPlayers();
+                    players.sort(comparator);
+                    return players;
             }
 
 

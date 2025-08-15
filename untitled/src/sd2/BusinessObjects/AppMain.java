@@ -77,10 +77,14 @@ public class AppMain
                 System.out.println("Username: " + username + " was found: " + user);
             else
                 System.out.println("Username: " + username + ", password: " + password +" is not valid.");
+
+
+
         }
         catch( DaoException e )
         {
             e.printStackTrace();
         }
+
     }
 }
