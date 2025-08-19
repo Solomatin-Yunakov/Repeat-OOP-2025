@@ -13,6 +13,12 @@
  * Collections of DTOs( e.g. ArrayList<CurrentPlayers> ) may also be passed
  * between the Data Access Layer (DAOs) and the Business Layer objects.
  */
+package untitled.src.sd2.DTOs;
+import untitled.src.sd2.DAOs.MySqlDao;
+import untitled.src.sd2.DTOs.CurrentPlayers;
+import untitled.src.sd2.Exceptions.DaoException;
+import untitled.src.sd2.DAOs.CurrentPlayersDaoInterface;
+import java.sql.Date;
 
 public class CurrentPlayers
 {
@@ -21,27 +27,24 @@ public class CurrentPlayers
     private double playerHeight;
     private Date dateofbirth;
 
-    public CurrentPlayers(int currentplayerid, String playerName, double playerHeight, Date DateOfBirth)
+    public CurrentPlayers(int currentplayerid, String playerName, double playerHeight, Date dateofbirth)
     {
         this.currentplayerid = currentplayerid;
         this.playerName = playerName;
         this.playerHeight = playerHeight;
-        this.DateOfBirth = DateOfBirth;
+        this.dateofbirth = dateofbirth;
 
     }
 
-    public CurrentPlayers(String playerName, double playerHeight, Date DateOfBirth)
+    public CurrentPlayers(String playerName, double playerHeight, Date dateofbirth)
     {
         this.currentplayerid = 0;
         this.playerName = playerName;
         this.playerHeight = playerHeight;
-        this.DateOfBirth = DateOfBirth;
+        this.dateofbirth = dateofbirth;
     }
 
-    public PerspectivePlayers()
-    {
 
-    }
     public int getPlayerid()
     {
         return currentplayerid;
@@ -66,13 +69,13 @@ public class CurrentPlayers
     {
         this.playerHeight = playerHeight;
     }
-    public Date getDateOfBirth()
+    public Date getdateofbirth()
     {
-        return DateOfBirth;
+        return dateofbirth;
     }
-    public void setDateOfBirth(Date DateOfBirth)
+    public void setdateofbirth(Date dateofbirth)
     {
-        this.DateOfBirth = DateOfBirth;
+        this.dateofbirth = dateofbirth;
     }
 
 
@@ -84,7 +87,7 @@ public class CurrentPlayers
                "currentplayerid=" + currentplayerid +
                ", playerName='" + playerName + '\'' +
                ", playerHeight=" + playerHeight +
-               ", DateOfBirth=" + DateOfBirth +
+               ", dateofbirth=" + dateofbirth +
                '}';
 
     }

@@ -19,15 +19,16 @@
  */
 
 
-import Exceptions.DaoException;
-import DTOs.CurrentPlayers;
-import DTOs.PerspectivePlayers;
+package untitled.src.sd2.DAOs;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.sql.Date;
-import DAOs.MySqlDao;
-public class MySqlUserDao extends MySqlDao implements UserDaoInterface
+
+import untitled.src.sd2.DTOs.CurrentPlayers;
+import untitled.src.sd2.Exceptions.DaoException;
+
+public class MySqlCurrentPlayersDao extends MySqlDao implements CurrentPlayersDaoInterface
 {
      public Connection getConnection() throws DaoException {
             String driver = "com.mysql.cj.jdbc.Driver";
@@ -81,11 +82,8 @@ public class MySqlUserDao extends MySqlDao implements UserDaoInterface
                 CurrentPlayers cp = new CurrentPlayers(playerId,playername,height,dateofbirth);
                 currentplayersList.add(cp);
             }
-            double total = 0.0;
-                        for (CurrentPlayers cp : currentplayersList) {
-                            total = total + cp.getAmount();
-                        }
-                        System.out.println("Total number of current players: " + total);
+
+
         } catch (SQLException e)
         {
             throw new DaoException("findAllCurrentPlayers() " + e.getMessage());
@@ -112,7 +110,8 @@ public class MySqlUserDao extends MySqlDao implements UserDaoInterface
         }
         return currentplayersList;     // may be empty
     }
-    public Earnings getCurrentPlayerByID(int dateofbirth) throws DaoException {
+
+    public CurrentPlayers getCurrentPlayerByID(int id) throws DaoException {
             Connection connection = null;
             PreparedStatement preparedStatement = null;
             ResultSet resultSet = null;
@@ -121,7 +120,7 @@ public class MySqlUserDao extends MySqlDao implements UserDaoInterface
                 connection = this.getConnection();
                 String query = "SELECT * FROM current_players WHERE CURRENTPLAYERID = ? ";
                 preparedStatement = connection.prepareStatement(query);
-                preparedStatement.setDate(1, date);
+                preparedStatement.setInt(1, id);
                 resultSet = preparedStatement.executeQuery();
                 if (resultSet.next()) {
                    int playerId = resultSet.getInt("CurrentPlayerID");
@@ -178,7 +177,7 @@ public class MySqlUserDao extends MySqlDao implements UserDaoInterface
                 try {
                     connection = this.getConnection();
 
-                    // Get the highest EXPENSE_ID to generate a new ID
+                    // Get the highest Player_ID to generate a new ID
                     String idQuery = "SELECT MAX(CurrentPlayerID) FROM current_players";
                     PreparedStatement idStatement = connection.prepareStatement(idQuery);
                     ResultSet idResult = idStatement.executeQuery();
@@ -198,15 +197,11 @@ public class MySqlUserDao extends MySqlDao implements UserDaoInterface
 
                     return preparedStatement.executeUpdate() > 0;
 
-                 catch (SQLException e) {
-                    throw new DaoException("Failed to add current_players: " + e.getMessage());
-                }
+                }catch (SQLException e) {
+                        throw new DaoException("Error a CurrentPlayer with ID " + ": " + e.getMessage());
+                    }
             }
-             public List<CurrentPlayers> findPlayerUsingFilter(Comparator<CurrentPlayers> comparator) {
-                    List<CurrentPlayers> players = findAllPlayers();
-                    players.sort(comparator);
-                    return players;
-            }
+
 
 
     /**
@@ -216,7 +211,7 @@ public class MySqlUserDao extends MySqlDao implements UserDaoInterface
      * @return User object if found, or null otherwise
      * @throws DaoException
      */
-    @Override
+
 
 }
 

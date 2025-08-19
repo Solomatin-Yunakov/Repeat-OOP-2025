@@ -1,4 +1,4 @@
-
+package untitled.src.sd2.BusinessObjects;
 
 /** OOP Feb 2022
  * This AppMain demonstrates the use of a Data Access Object (DAO)
@@ -17,19 +17,20 @@
  * to create the required MySQL user_database and User table.
  */
 
-import java.sql.Connection;
 import java.util.List;
-import DAOs.MySqlDao;
+
+import untitled.src.sd2.DTOs.CurrentPlayers;
+import untitled.src.sd2.Exceptions.DaoException;
+import untitled.src.sd2.DAOs.CurrentPlayersDaoInterface;
+import untitled.src.sd2.DAOs.MySqlCurrentPlayersDao;
 import java.sql.Date;
-import DTOs.CurrentPlayers;
-import DTOs.PerspectivePlayers;
 
 public class AppMain
 {
     public static void main(String[] args)
     {
         CurrentPlayersDaoInterface ICurrentPlayersDao = new MySqlCurrentPlayersDao();
-        PerspectivePlayersDaoInterface IPerspectivePlayersDao = new MySqlPerspectivePlayersDao();  //"IUserDao" -> "I" stands for for
+
 
 //        // Notice that the userDao reference is an Interface type.
 //        // This allows for the use of different concrete implementations.
@@ -48,33 +49,43 @@ public class AppMain
 
         try
         {
-            System.out.println("\nCall findAllUsers()");
-            List<CurrentPlayers> currentplayers = ICurrentPlayersDao.findAllUsers();     // call a method in the DAO
+            System.out.println("\nCall findAllPlayers()");
+            List<CurrentPlayers> currentplayers = ICurrentPlayersDao.findAllPlayers();     // call a method in the DAO
 
-            if( users.isEmpty() )
-                System.out.println("There are no Users");
+            if( currentplayers.isEmpty() )
+                System.out.println("There are no Players");
             else {
-                for (User user : users)
-                    System.out.println("User: " + user.toString());
+                for (CurrentPlayers currentplayer : currentplayers)
+                    System.out.println("Players: " + currentplayer.toString());
             }
 
             // test dao - with username and password that we know are present in the database
             System.out.println("\nCall: findUserByUsernamePassword()");
             String username = "smithj";
             String password = "password";
-            User user = IUserDao.findUserByUsernamePassword(username, password);
+            int lookingid = 4;
+            CurrentPlayers currentplayer2 = ICurrentPlayersDao.getCurrentPlayerByID(lookingid);
 
-            if( user != null ) // null returned if userid and password not valid
-                System.out.println("User found: " + user);
+            if( currentplayer2 != null ) // null returned if userid and password not valid
+                System.out.println("User found: " + currentplayer2);
             else
                 System.out.println("Username with that password not found");
 
             // test dao - with an invalid username (i.e. not in database)
             username = "madmax";
             password = "thunderdome";
-            user = IUserDao.findUserByUsernamePassword(username, password);
-            if(user != null)
-                System.out.println("Username: " + username + " was found: " + user);
+            int idtodell=2;
+            boolean currentplayer3 = ICurrentPlayersDao.DeleteCurrentPlayerByID(idtodell);
+            if(currentplayer3 != false)
+                System.out.println("Username: " + username + " was found: " + currentplayer3);
+            else
+                System.out.println("Username: " + username + ", password: " + password +" is not valid.");
+            String Name = "John Smith";
+            double height = 1.85;
+            Date DOB = Date.valueOf("1990-01-01");
+            boolean currentplayer4 = ICurrentPlayersDao.AddCurrentPlayer(Name,height,DOB);
+            if(currentplayer3 != false)
+                System.out.println("Username: " + username + " was found: " + currentplayer4);
             else
                 System.out.println("Username: " + username + ", password: " + password +" is not valid.");
 

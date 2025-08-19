@@ -1,4 +1,4 @@
-package sd2.DAOs;
+package untitled.src.sd2.DAOs;
 
 /** OOP Feb 2022
  * UserDaoInterface
@@ -19,14 +19,21 @@ package sd2.DAOs;
  * can be replaced by mock DAO objects.
  */
 
-import DTOs.CurrentPlayers;
-import sd2.Exceptions.DaoException;
+
+
 import java.util.List;
 import java.sql.Date;
+import untitled.src.sd2.DAOs.MySqlDao;
+import untitled.src.sd2.DTOs.CurrentPlayers;
+import untitled.src.sd2.Exceptions.DaoException;
+import untitled.src.sd2.DAOs.CurrentPlayersDaoInterface;
 
 public interface CurrentPlayersDaoInterface
 {
-    public List<CurrentPlayers> findAllPlayers() throws DaoException;
+    List<CurrentPlayers> findAllPlayers() throws DaoException;
+    CurrentPlayers getCurrentPlayerByID(int id) throws DaoException;
+    boolean DeleteCurrentPlayerByID(int id) throws DaoException;
+    boolean AddCurrentPlayer(String Name,  double height, Date DOB) throws DaoException;
 
 
 

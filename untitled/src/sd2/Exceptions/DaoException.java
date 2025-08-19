@@ -1,4 +1,4 @@
-package com.dkit.oop.sd2.Exceptions;
+package untitled.src.sd2.Exceptions;
 
 /**     Feb 2022
  * A 'homemade' Exception to report exceptions
