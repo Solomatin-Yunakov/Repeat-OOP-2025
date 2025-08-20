@@ -27,6 +27,7 @@ import untitled.src.sd2.DAOs.MySqlDao;
 import untitled.src.sd2.DTOs.CurrentPlayers;
 import untitled.src.sd2.Exceptions.DaoException;
 import untitled.src.sd2.DAOs.CurrentPlayersDaoInterface;
+import java.sql.DriverManager;
 
 public interface CurrentPlayersDaoInterface
 {

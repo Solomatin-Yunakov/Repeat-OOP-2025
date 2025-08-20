@@ -24,6 +24,12 @@ import untitled.src.sd2.Exceptions.DaoException;
 import untitled.src.sd2.DAOs.CurrentPlayersDaoInterface;
 import untitled.src.sd2.DAOs.MySqlCurrentPlayersDao;
 import java.sql.Date;
+import java.util.ArrayList;
+import java.util.Scanner;
+import java.sql.DriverManager;
+
+import java.io.*;
+import java.net.*;
 
 public class AppMain
 {
@@ -49,6 +55,7 @@ public class AppMain
 
         try
         {
+
             System.out.println("\nCall findAllPlayers()");
             List<CurrentPlayers> currentplayers = ICurrentPlayersDao.findAllPlayers();     // call a method in the DAO
 

@@ -24,8 +24,11 @@ package untitled.src.sd2.DAOs;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.sql.Date;
+import java.sql.DriverManager;
+
 
 import untitled.src.sd2.DTOs.CurrentPlayers;
 import untitled.src.sd2.Exceptions.DaoException;
@@ -252,6 +255,31 @@ public class MySqlCurrentPlayersDao extends MySqlDao implements CurrentPlayersDa
         } catch (SQLException e) {
             throw new DaoException("Error a CurrentPlayer with ID " + ": " + e.getMessage());
         }
+    }
+
+    public List<CurrentPlayers> findMaterialByFilter(Comparator<CurrentPlayers> comparator) throws DaoException {
+        List<CurrentPlayers> currentPlayers = new ArrayList<>();
+        String query = "SELECT * FROM current_players"; // Fixed from PLAYERS
+
+        try (Connection conn = getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query);
+             ResultSet rs = stmt.executeQuery()) {
+
+            while (rs.next()) {
+                // Add material to list
+                CurrentPlayers currentplayer = new CurrentPlayers(
+                        rs.getInt("CurrentPlayerID"),
+                        rs.getString("Name"),
+                        rs.getDouble("Height"),
+                        rs.getDate("DOB")
+                        );
+                currentPlayers.add(currentplayer);
+            }
+            currentPlayers.sort(comparator); // Sort list
+        } catch (SQLException e) {
+            throw new DaoException("Error finding currentPlayers"); // Fixed message
+        }
+        return currentPlayers;
     }
 
 
