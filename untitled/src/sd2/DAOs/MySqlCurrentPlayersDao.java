@@ -69,9 +69,7 @@ public class MySqlCurrentPlayersDao extends MySqlDao implements CurrentPlayersDa
                 if (preparedStatement != null) {
                     preparedStatement.close();
                 }
-                if (connection != null) {
-                    freeConnection(connection);
-                }
+
             } catch (SQLException e) {
                 throw new DaoException("loadCache() " + e.getMessage());
             }
@@ -257,9 +255,9 @@ public class MySqlCurrentPlayersDao extends MySqlDao implements CurrentPlayersDa
         }
     }
 
-    public List<CurrentPlayers> findMaterialByFilter(Comparator<CurrentPlayers> comparator) throws DaoException {
+    public List<CurrentPlayers> findPlayerByFilter(Comparator<CurrentPlayers> comparator) throws DaoException {
         List<CurrentPlayers> currentPlayers = new ArrayList<>();
-        String query = "SELECT * FROM current_players"; // Fixed from PLAYERS
+        String query = "SELECT * FROM current_players";
 
         try (Connection conn = getConnection();
              PreparedStatement stmt = conn.prepareStatement(query);
