@@ -1,7 +1,6 @@
 package untitled.src.sd2.DAOs;
 
 import untitled.src.sd2.DTOs.CurrentPlayers;
-import javafx.scene.paint.Material;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import java.io.*;
@@ -13,12 +12,13 @@ import java.util.concurrent.Executors;
 
 public class Server {
     private static final int SERVER_PORT_NUMBER = 8080;
-//    private static final MySqlMaterialsDAO materialDao = new MySqlMaterialsDAO();
+    private static final MySqlCurrentPlayersDao currentplayerDao = new MySqlCurrentPlayersDao();
     public static final String GET_ALL_ENTITIES_REQUEST = "GET_ALL_ENTITIES";
     public static final String DELETE_BY_ID = "DELETE_BY_ID";
     public static final String ADD_AN_ENTITY = "ADD_AN_ENTITY";
     private static final String IMAGE_DIRECTORY = "images/";
     public static final String CLIENT_EXIT = "CLIENT_EXIT";
+
     private static final int THREAD_POOL_SIZE = 10;
 
 
@@ -74,8 +74,8 @@ public class Server {
 //                String response = deleteById(id);
 //                out.println(response);
 //            } else if (request.startsWith(ADD_AN_ENTITY)) {
-//                String JSONMaterial = request.substring(ADD_AN_ENTITY.length() + 1);
-//                String response = addMaterial(JSONMaterial);
+//                String JSONcurrentplayer = request.substring(ADD_AN_ENTITY.length() + 1);
+//                String response = addcurrentplayer(JSONcurrentplayer);
 //                out.println(response);
 //            } else if (CLIENT_EXIT.equals(request)) {
 //                System.out.println("Server: Client " + clientNumber + " has requested to exit.");
@@ -92,7 +92,34 @@ public class Server {
                 System.out.println("Error closing client socket for Client " + clientNumber + ": " + e.getMessage());
             }
         }
-    }}
+    }
+
+    public static String convertToJson(List<CurrentPlayers> playerslist) {
+        if (playerslist == null) {
+            return new JSONArray().toString();
+        }
+        JSONArray jsonArray = new JSONArray();
+        for (CurrentPlayers currentplayer : playerslist) {
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("id", currentplayer.getPlayerid());
+            jsonObject.put("name", currentplayer.getPlayerName());
+            jsonObject.put("height", currentplayer.getPlayerHeight());
+            jsonObject.put("date of birth", currentplayer.getdateofbirth());
+            jsonArray.put(jsonObject);
+        }
+        return jsonArray.toString();
+    }
+    private static String getAllEntitiesAsJson() {
+        try {
+            List<CurrentPlayers> playerslist = currentplayerDao.findAllPlayers();
+            return convertToJson(playerslist);
+        } catch (Exception e) {
+            System.out.println("Error fetching materials: " + e.getMessage());
+            return new JSONArray().toString();
+        }
+    }
+
+
 
 //    private String getAllPlayers() {
 //
@@ -104,7 +131,7 @@ public class Server {
 //        return ;
 //    }
 //
-//    private String addMaterial(String jsonMaterial) {
+//    private String addcurrentplayer(String jsoncurrentplayer) {
 //
 //        return ;
-//    }}
+}
