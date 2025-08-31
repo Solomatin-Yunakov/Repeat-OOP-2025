@@ -6,7 +6,8 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="Repeat-OOP-2025" />
+        <module name="Reapeat-OO" />
+        <module name="repeat-oo" />
       </profile>
     </annotationProcessing>
   </component>
